@@ -88,6 +88,7 @@ const loginUser = async (req, res) => {
     }
 };
 
+// User Logout
 const logout = async (req, res) => {
     try {
         // Clear the JWT cookie
@@ -102,14 +103,4 @@ const logout = async (req, res) => {
     }
 }
 
-// Get all users
-const getUsers = async (req, res) => {
-    try {
-        const users = await User.find();
-        res.json(users);
-    } catch (error) {
-        res.status(500).json({ message: "Server error" });
-    }
-};
-
-module.exports = { registerUser, loginUser, logout, getUsers };
+module.exports = { registerUser, loginUser, logout };

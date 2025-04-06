@@ -28,8 +28,8 @@ const sendMessage = async (req, res) => {
         //  await conversation.save();
 
         if (newMessage) {
-			conversation.messages.push(newMessage._id);
-		}
+            conversation.messages.push(newMessage._id);
+        }
 
         await Promise.all([conversation.save(), newMessage.save()]);
 
@@ -41,4 +41,26 @@ const sendMessage = async (req, res) => {
 
 }
 
-module.exports = { sendMessage }
+const getMessages = async (req, res) => {
+    try {
+
+        const { id: userToChatId } = req.params;
+        const senderId = req.user._id;
+
+        const conversation = await Conversation.findOne({
+            participants: { $all: [senderId, userToChatId] },
+        }).populate('messages');
+
+        if (!conversation) return res.status(200).json([]);
+
+        const messages = conversation.messages;
+
+        res.status(200).json(messages);
+
+    } catch (error) {
+        console.error('Error fetching messages:', error.message);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+module.exports = { sendMessage, getMessages };
