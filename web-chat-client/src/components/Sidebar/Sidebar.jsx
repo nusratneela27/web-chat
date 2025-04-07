@@ -13,6 +13,7 @@ const Sidebar = () => {
         display: "flex",
         flexDirection: "column",
         height: "100%",
+        
       }}
     >
       <SearchInput />
