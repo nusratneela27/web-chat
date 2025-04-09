@@ -1,28 +1,27 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+} from "@mui/material";
 import logo from "../../assets/logo.png";
 import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router";
-import { loginUser } from "../../api/auth";
-import toast from "react-hot-toast";
-import { useAuth } from "../../providers/AuthProviders";
+import useLogin from "../../hooks/useLogin";
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
+  const { login, loading } = useLogin();
   const navigate = useNavigate();
-  const {login} = useAuth();
 
-  const onSubmit = (data) => {
-    // console.log(data);
-    loginUser(data)
-    .then((res) => {
-      console.log(res);
-      toast.success(res.message);
-      login(res.accessToken);
+  const onSubmit = async (data) => {
+    const success = await login(data);
+    if (success) {
       navigate("/");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    } else {  
+      navigate("/login");
+    }
   };
 
   return (
@@ -74,14 +73,14 @@ const Login = () => {
             type="username"
             variant="outlined"
             fullWidth
-            {...register("username", { required: true })}
+            {...register("username")}
           />
           <TextField
             label="Password"
             type="password"
             variant="outlined"
             fullWidth
-            {...register("password", { required: true })}
+            {...register("password")}
           />
 
           <Button
@@ -95,7 +94,11 @@ const Login = () => {
               boxShadow: "none",
             }}
           >
-            Login
+            {loading ? (
+              <CircularProgress size={24} color="white.main" />
+            ) : (
+              "Login"
+            )}
           </Button>
         </Box>
 

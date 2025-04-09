@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext(null);
 
@@ -9,34 +8,28 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("accessToken");
+    const storedToken = JSON.parse(localStorage.getItem("chat-user")) || null; 
     if (storedToken) {
-      const decodedToken = jwtDecode(storedToken);
-      setUser({
-        email: decodedToken.email,
-        name: decodedToken.name,
-      });
+      setUser(storedToken);
     }
   }, []);
 
-  const login = (token) => {
-    localStorage.setItem("accessToken", token);
-    const decodedToken = jwtDecode(token);
-    setUser({
-      email: decodedToken.email,
-      name: decodedToken.name,
-    });
+  const signup = (token) => {
+    console.log("Signing up with token:", token);
+    localStorage.setItem("chat-user", JSON.stringify(token));
+    setUser(token);
   };
 
-  const logout = () => {
-    localStorage.removeItem("accessToken");
-    setUser(null);
+  const login = (token) => {
+    console.log("Logging in with token:", token);
+    localStorage.setItem("chat-user", JSON.stringify(token));
+    setUser(token);
   };
 
   const authInfo = {
     user,
+    signup,
     login,
-    logout,
   };
 
   return (

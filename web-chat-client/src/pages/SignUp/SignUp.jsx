@@ -1,25 +1,32 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  FormControl,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  CircularProgress,
+} from "@mui/material";
+
 import logo from "../../assets/logo.png";
 import { Controller, useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router";
-import { registerUser } from "../../api/auth";
-import toast from "react-hot-toast";
+import useSignup from "../../hooks/useSignup";
 
 const SignUp = () => {
-  const { register, handleSubmit , control } = useForm();
+  const { register, handleSubmit, control } = useForm();
+
+  const { signup, loading } = useSignup();
+
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    // console.log(data);
-    registerUser(data)
-      .then((res) => {
-        console.log(res);
-        toast.success(res.message);
-        // navigate("/login");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const onSubmit = async (data) => {
+    const success = await signup(data);
+    if (success) {
+      navigate("/");
+    }
   };
 
   return (
@@ -71,35 +78,42 @@ const SignUp = () => {
             type="text"
             variant="outlined"
             fullWidth
-            {...register("fullName", { required: true })}
+            {...register("fullName")}
           />
           <TextField
             label="Username"
             type="text"
             variant="outlined"
             fullWidth
-            {...register("username", { required: true })}
+            {...register("username")}
           />
           <TextField
             label="Password"
             type="password"
             variant="outlined"
             fullWidth
-            {...register("password", { required: true })}
+            {...register("password")}
           />
 
-          <FormControl fullWidth variant="outlined">
-            <InputLabel id="role-label">Gender</InputLabel>
+          <FormControl component="fieldset">
             <Controller
-              name="accountType"
+              name="gender"
               control={control}
-              defaultValue=""
-              rules={{ required: true }}
+              defaultValue="male"
+              // rules={{ required: true }}
               render={({ field }) => (
-                <Select {...field} labelId="role-label" label="Role">
-                  <MenuItem value="agent">Male</MenuItem>
-                  <MenuItem value="user">Female</MenuItem>
-                </Select>
+                <RadioGroup row {...field}>
+                  <FormControlLabel
+                    value="male"
+                    control={<Radio />}
+                    label="Male"
+                  />
+                  <FormControlLabel
+                    value="female"
+                    control={<Radio />}
+                    label="Female"
+                  />
+                </RadioGroup>
               )}
             />
           </FormControl>
@@ -115,7 +129,11 @@ const SignUp = () => {
               boxShadow: "none",
             }}
           >
-            Sign up
+            {loading ? (
+              <CircularProgress size={24} color="white.main" />
+            ) : (
+              "Sign up"
+            )}
           </Button>
         </Box>
 

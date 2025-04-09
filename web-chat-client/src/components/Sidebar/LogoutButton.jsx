@@ -1,8 +1,11 @@
 import React from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
+import useLogout from "../../hooks/useLogout";
 
 const LogoutButton = () => {
+  const { loading, logout } = useLogout();
+
   return (
     <Box
       sx={{
@@ -11,7 +14,12 @@ const LogoutButton = () => {
         py: 1,
       }}
     >
-      <LogoutIcon></LogoutIcon>
+      {!loading ? (
+        <LogoutIcon onClick={logout} sx={{ fontSize: 30 }}></LogoutIcon>
+      ) : (
+        <CircularProgress size={24} color="inherit" />
+      )}
+      {/* <LogoutIcon></LogoutIcon> */}
     </Box>
   );
 };
