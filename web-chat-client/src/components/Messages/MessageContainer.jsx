@@ -1,9 +1,23 @@
 import { Box, Typography, Stack } from "@mui/material";
 import Messages from "./Messages";
 import MessageInput from "./MessageInput";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { setSelectedConversation } from "../../redux/slices/conversationSlice";
 
 const MessageContainer = () => {
-  const noChatSelected = true;
+  const selectedConversation = useSelector(
+    (state) => state.conversation.selectedConversation
+  );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(setSelectedConversation(null)); // Cleanup on unmount
+    };
+  }, []);
+
   return (
     <Box
       sx={{
@@ -13,7 +27,7 @@ const MessageContainer = () => {
         flex: 1,
       }}
     >
-      {noChatSelected ? (
+      {!selectedConversation ? (
         <NoChatSelected />
       ) : (
         <>
@@ -32,7 +46,7 @@ const MessageContainer = () => {
                 component="span"
                 sx={{ fontWeight: "bold", color: "white.main" }}
               >
-                John Doe
+                {selectedConversation?.username}
               </Typography>
             </Typography>
           </Box>

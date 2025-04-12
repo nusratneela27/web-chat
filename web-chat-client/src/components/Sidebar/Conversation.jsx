@@ -1,9 +1,21 @@
 import { Box, Avatar, Typography, Divider } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedConversation } from "../../redux/slices/conversationSlice";
 
-const Conversation = () => {
+const Conversation = ({ conversation, lastIdx }) => {
+  const dispatch = useDispatch();
+  const selectedConversation = useSelector(
+    (state) => state.conversation.selectedConversation
+  );
+
+  const handleSelect = () => {
+    dispatch(setSelectedConversation(conversation));
+  }
+
   return (
     <>
       <Box
+        onClick={handleSelect}
         sx={{
           display: "flex",
           alignItems: "center",
@@ -15,16 +27,16 @@ const Conversation = () => {
           "&:hover": {
             backgroundColor: "primary.main",
           },
+          backgroundColor:
+            selectedConversation?._id === conversation._id
+              ? "primary.main"
+              : "transparent",
         }}
       >
         {/* Avatar */}
-        <Avatar
-          alt="User Avatar"
-          // src="https://cdn0.iconfinder.com/data/icons/communication-line-10/24/account_profile_user_contact_person_avatar_placeholder-512.png"
-          sx={{ width: 48, height: 48 }}
-        />
+        <Avatar src={conversation.profilePic} sx={{ width: 48, height: 48 }} />
 
-        {/* Username & Emoji */}
+        {/* Username */}
         <Box
           sx={{
             flex: 1,
@@ -41,15 +53,12 @@ const Conversation = () => {
               fontWeight: "bold",
             }}
           >
-            John Doe
+            {conversation.username}
           </Typography>
-          {/* <Typography variant="body1" component="span" fontSize={20}>
-            🎃
-          </Typography> */}
         </Box>
       </Box>
 
-      <Divider />
+      {!lastIdx && <Divider />}
     </>
   );
 };

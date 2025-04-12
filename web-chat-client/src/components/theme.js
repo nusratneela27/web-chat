@@ -10,7 +10,7 @@ const theme = createTheme({
             main: "#301934",
         },
         secondary: {
-            main: "#242323"
+            main: "#5c5673"
         },
         white: {
             main: "#FFFFFF",

@@ -16,7 +16,7 @@ const Home = () => {
       <Box
         sx={{
           display: "flex",
-          height: { sm: 450, md: 600 },
+          height: { sm: 450, md: 700 },
           borderRadius: 2,
           overflow: "hidden",
           backgroundColor: "rgba(156, 163, 175, 0.3)",

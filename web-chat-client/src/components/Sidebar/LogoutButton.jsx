@@ -19,7 +19,6 @@ const LogoutButton = () => {
       ) : (
         <CircularProgress size={24} color="inherit" />
       )}
-      {/* <LogoutIcon></LogoutIcon> */}
     </Box>
   );
 };

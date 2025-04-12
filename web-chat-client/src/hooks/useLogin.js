@@ -15,23 +15,26 @@ const useLogin = () => {
         setLoading(true);
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ username, password }),
-            });
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, 
+                {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ username, password }),
+                });
 
             const data = await response.json();
-            if (data.error) {
-                throw new Error(data.error);
+            if (!response.ok) {
+                throw new Error(data.message || "Login failed");
             }
             localStorage.setItem("chat-user", JSON.stringify(data));
             setAuthUser(data);
             return true;
         } catch (error) {
             toast.error(error.message);
+            // return false;
         }
         finally {
             setLoading(false);
@@ -42,7 +45,7 @@ const useLogin = () => {
 
 export default useLogin;
 
-function handleInputErrors({username, password}) {
+function handleInputErrors({ username, password }) {
     if (!username || !password) {
         toast.error("Please fill in all fields");
         return false;

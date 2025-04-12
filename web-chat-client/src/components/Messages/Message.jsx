@@ -1,21 +1,43 @@
 import { Box, Avatar, Typography } from "@mui/material";
+import { useAuthContext } from "../../context/AuthContext";
+import { useSelector } from "react-redux";
+import { extractTime } from "../../utils/extractTime";
 
-const Message = () => {
+const Message = ({ message }) => {
+  const { authUser } = useAuthContext();
+  const selectedConversation = useSelector(
+    (state) => state.conversation.selectedConversation
+  );
+
+  const fromMe = message.senderId === authUser._id;
+  const formattedTime = extractTime(message.createdAt);
+  const profilePic = fromMe
+    ? authUser.profilePic
+    : selectedConversation?.profilePic;
+
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "flex-end",
-        mb: 2,
+        alignItems: fromMe ? "flex-end" : "flex-start",
+        mb: 1,
       }}
     >
-      {/* Avatar and message bubble */}
-      <Box sx={{ display: "flex", alignItems: "flex-end", gap: 1 }}>
+      {/* Message bubble and avatar */}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "flex-end",
+          flexDirection: fromMe ? "row-reverse" : "row",
+          gap: 1,
+        }}
+      >
+        <Avatar src={profilePic} sx={{ width: 40, height: 40 }} />
         <Box
           sx={{
-            backgroundColor: "#0284c7", // sky-600
-            color: "white",
+            backgroundColor: fromMe ? "primary.main" : "secondary.main",
+            color: "white.main",
             px: 2,
             py: 1,
             borderRadius: "16px",
@@ -23,22 +45,21 @@ const Message = () => {
             wordBreak: "break-word",
           }}
         >
-          <Typography variant="body2">Hi</Typography>
+          <Typography variant="body2">{message.message}</Typography>
         </Box>
-
-        <Avatar
-          alt="User"
-          src="https://cdn0.iconfinder.com/data/icons/communication-line-10/24/account_profile_user_contact_person_avatar_placeholder-512.png"
-          sx={{ width: 40, height: 40 }}
-        />
       </Box>
 
-      {/* Footer with timestamp */}
+      {/* Timestamp */}
       <Typography
         variant="caption"
-        sx={{ opacity: 0.6, mt: 0.5, mr: 6 }}
+        sx={{
+          opacity: 0.6,
+          mt: 0.5,
+          mr: fromMe ? 6 : 0,
+          ml: fromMe ? 0 : 6,
+        }}
       >
-        12:11
+        {formattedTime}
       </Typography>
     </Box>
   );
