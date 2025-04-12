@@ -9,15 +9,18 @@ import theme from "./components/theme";
 import { AuthContextProvider } from "./context/AuthContext";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import { SocketContextProvider } from "./context/SocketContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
       <AuthContextProvider>
-        <ThemeProvider theme={theme}>
-          <RouterProvider router={router}></RouterProvider>
-          <Toaster />
-        </ThemeProvider>
+        <SocketContextProvider>
+          <ThemeProvider theme={theme}>
+            <RouterProvider router={router}></RouterProvider>
+            <Toaster />
+          </ThemeProvider>
+        </SocketContextProvider>
       </AuthContextProvider>
     </Provider>
   </React.StrictMode>

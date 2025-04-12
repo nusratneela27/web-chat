@@ -1,9 +1,11 @@
 import { Box, Typography, Stack } from "@mui/material";
+import logo from "../../assets/logo.png";
 import Messages from "./Messages";
 import MessageInput from "./MessageInput";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setSelectedConversation } from "../../redux/slices/conversationSlice";
+import { useAuthContext } from "../../context/AuthContext";
 
 const MessageContainer = () => {
   const selectedConversation = useSelector(
@@ -46,7 +48,7 @@ const MessageContainer = () => {
                 component="span"
                 sx={{ fontWeight: "bold", color: "white.main" }}
               >
-                {selectedConversation?.username}
+                {selectedConversation?.fullName}
               </Typography>
             </Typography>
           </Box>
@@ -63,6 +65,7 @@ const MessageContainer = () => {
 export default MessageContainer;
 
 const NoChatSelected = () => {
+  const { authUser } = useAuthContext();
   return (
     <Box
       sx={{
@@ -74,13 +77,14 @@ const NoChatSelected = () => {
       }}
     >
       <Stack spacing={2} alignItems="center" textAlign="center" sx={{ px: 2 }}>
+        <img src={logo} alt="logo" />
         <Typography
           variant="h6"
           sx={{
             fontWeight: 600,
           }}
         >
-          Welcome 👋 neela❄
+          Welcome 👋 {authUser.fullName}
         </Typography>
         <Typography
           variant="body1"

@@ -1,6 +1,7 @@
 import { Box, Avatar, Typography, Divider } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedConversation } from "../../redux/slices/conversationSlice";
+import { useSocketContext } from "../../context/SocketContext";
 
 const Conversation = ({ conversation, lastIdx }) => {
   const dispatch = useDispatch();
@@ -10,7 +11,10 @@ const Conversation = ({ conversation, lastIdx }) => {
 
   const handleSelect = () => {
     dispatch(setSelectedConversation(conversation));
-  }
+  };
+
+  const { onlineUsers } = useSocketContext();
+  const isOnline = onlineUsers.includes(conversation._id);
 
   return (
     <>
@@ -26,15 +30,39 @@ const Conversation = ({ conversation, lastIdx }) => {
           cursor: "pointer",
           "&:hover": {
             backgroundColor: "primary.main",
+            color: "white.main",
           },
           backgroundColor:
             selectedConversation?._id === conversation._id
               ? "primary.main"
               : "transparent",
+          color:
+            selectedConversation?._id === conversation._id
+              ? "white.main"
+              : "text.primary",
         }}
       >
-        {/* Avatar */}
-        <Avatar src={conversation.profilePic} sx={{ width: 48, height: 48 }} />
+        {/* Avatar with online indicator */}
+        <Box sx={{ position: "relative" }}>
+          <Avatar
+            src={conversation.profilePic}
+            sx={{ width: 48, height: 48 }}
+          />
+          {isOnline && (
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                right: 0,
+                width: 12,
+                height: 13,
+                backgroundColor: "#00FF00",
+                border: "none",
+                borderRadius: "50%",
+              }}
+            />
+          )}
+        </Box>
 
         {/* Username */}
         <Box
@@ -43,9 +71,6 @@ const Conversation = ({ conversation, lastIdx }) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            "&:hover": {
-              color: "white.main",
-            },
           }}
         >
           <Typography
@@ -53,7 +78,7 @@ const Conversation = ({ conversation, lastIdx }) => {
               fontWeight: "bold",
             }}
           >
-            {conversation.username}
+            {conversation.fullName}
           </Typography>
         </Box>
       </Box>

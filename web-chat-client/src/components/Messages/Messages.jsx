@@ -3,17 +3,19 @@ import Message from "./Message";
 import useGetMessages from "../../hooks/useGetMesages";
 import MessageSkeleton from "../skeletons/MessageSkeleton";
 import { useEffect, useRef } from "react";
+import useListenMessages from "../../hooks/useListenMessages";
 
 const Messages = () => {
   const { messages, loading } = useGetMessages();
   // console.log("messages", messages);
   const lastMessageRef = useRef();
+  useListenMessages();
 
-  useEffect(() => {
-    setTimeout(() => {
-      lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
-  }, [messages]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+  //   }, 100);
+  // }, [messages]);
 
   return (
     <Box
