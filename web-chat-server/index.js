@@ -7,8 +7,9 @@ const connectDB = require("./config/database");
 const authRoutes = require("./routes/authRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const userRoutes = require("./routes/userRoutes");
+const { app, server } = require("./socket/socket");
 
-const app = express();
+// const app = express();
 const port = process.env.PORT || 5000;
 
 require("dotenv").config();
@@ -31,11 +32,15 @@ async function initializeServer() {
     app.use("/messages", messageRoutes)
     app.use("/users", userRoutes)
 
-    app.get("/", (req, res) => {
-        res.send("Server is running");
-    });
+    // app.get("/", (req, res) => {
+    //     res.send("Server is running");
+    // });
 
-    app.listen(port, () => {
+    // app.listen(port, () => {
+    //     console.log(`Server is running on port ${port}`);
+    // });
+
+    server.listen(port, () => {
         console.log(`Server is running on port ${port}`);
     });
 }
