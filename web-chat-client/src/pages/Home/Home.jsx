@@ -18,10 +18,11 @@ const Home = () => {
           display: "flex",
           height: { sm: 450, md: 700 },
           borderRadius: 2,
-          overflow: "hidden",
+          // overflow: "hidden",
           backgroundColor: "rgba(156, 163, 175, 0.3)",
           backdropFilter: "blur(10px)",
           WebkitBackdropFilter: "blur(10px)",
+          boxShadow: 3,
         }}
       >
         <Sidebar />

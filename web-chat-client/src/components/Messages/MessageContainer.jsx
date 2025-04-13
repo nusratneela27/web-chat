@@ -16,9 +16,9 @@ const MessageContainer = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(setSelectedConversation(null)); // Cleanup on unmount
+      dispatch(setSelectedConversation(null)); // Cleanup function on unmount
     };
-  }, []);
+  }, [setSelectedConversation]);
 
   return (
     <Box

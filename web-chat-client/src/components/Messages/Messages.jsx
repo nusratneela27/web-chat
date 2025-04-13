@@ -8,14 +8,14 @@ import useListenMessages from "../../hooks/useListenMessages";
 const Messages = () => {
   const { messages, loading } = useGetMessages();
   // console.log("messages", messages);
-  const lastMessageRef = useRef();
   useListenMessages();
+  const lastMessageRef = useRef();
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-  //   }, 100);
-  // }, [messages]);
+  useEffect(() => {
+    setTimeout(() => {
+      lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  }, [messages]);
 
   return (
     <Box
@@ -28,6 +28,14 @@ const Messages = () => {
         gap: 1.5,
       }}
     >
+      {!loading &&
+        messages.length > 0 &&
+        messages.map((message) => (
+          <Box key={message._id} ref={lastMessageRef}>
+            <Message message={message} />
+          </Box>
+        ))}
+        
       {loading && [...Array(3)].map((_, idx) => <MessageSkeleton key={idx} />)}
 
       {!loading && messages.length === 0 && (
@@ -43,14 +51,6 @@ const Messages = () => {
           Send messages to start a conversation
         </Box>
       )}
-
-      {!loading &&
-        messages.length > 0 &&
-        messages.map((message) => (
-          <Box key={message._id} ref={lastMessageRef}>
-            <Message message={message} />
-          </Box>
-        ))}
     </Box>
   );
 };

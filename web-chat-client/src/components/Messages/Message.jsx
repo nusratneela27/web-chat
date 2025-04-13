@@ -8,7 +8,6 @@ const Message = ({ message }) => {
   const selectedConversation = useSelector(
     (state) => state.conversation.selectedConversation
   );
-
   const fromMe = message.senderId === authUser._id;
   const formattedTime = extractTime(message.createdAt);
   const profilePic = fromMe

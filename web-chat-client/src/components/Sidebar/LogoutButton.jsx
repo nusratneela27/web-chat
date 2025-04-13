@@ -10,8 +10,8 @@ const LogoutButton = () => {
     <Box
       sx={{
         cursor: "pointer",
-        height: 50,
-        py: 1,
+        // height: 50,
+        pt: 2,
       }}
     >
       {!loading ? (

@@ -12,7 +12,7 @@ const Sidebar = () => {
         p: 2,
         display: "flex",
         flexDirection: "column",
-        height: "100%",
+        height: "95%",
         
       }}
     >
