@@ -57,10 +57,53 @@ const Messages = () => {
 
 export default Messages;
 
-// import { Box } from "@mui/material";
+// ========================== typing =====================
+
+// import { useState, useEffect, useRef, useContext } from "react";
+// import { useSelector } from "react-redux";
+// import { Box, Typography } from "@mui/material";
+// import useGetMessages from "../../hooks/useGetMesages";
+// import useListenMessages from "../../hooks/useListenMessages";
 // import Message from "./Message";
+// import MessageSkeleton from "../skeletons/MessageSkeleton";
+// import { useSocketContext } from "../../context/SocketContext";
+// import { AuthContext } from "../../context/AuthContext";
 
 // const Messages = () => {
+//   const { messages, loading } = useGetMessages();
+//   const selectedConversation = useSelector(state => state.conversation.selectedConversation);
+//   const { authUser: currentUser } = useContext(AuthContext);
+//   const { socket } = useSocketContext();
+//   const [isTyping, setIsTyping] = useState(false);
+//   const lastMessageRef = useRef();
+
+//   useListenMessages();
+
+//   useEffect(() => {
+//     socket?.on("typing", ({ senderId, receiverId }) => {
+//       if (receiverId === currentUser._id && senderId === selectedConversation._id) {
+//         setIsTyping(true);
+//       }
+//     });
+
+//     socket?.on("stopTyping", ({ senderId, receiverId }) => {
+//       if (receiverId === currentUser._id && senderId === selectedConversation._id) {
+//         setIsTyping(false);
+//       }
+//     });
+
+//     return () => {
+//       socket?.off("typing");
+//       socket?.off("stopTyping");
+//     };
+//   }, [socket, currentUser._id, selectedConversation?._id]);
+
+//   useEffect(() => {
+//     setTimeout(() => {
+//       lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+//     }, 100);
+//   }, [messages]);
+
 //   return (
 //     <Box
 //       sx={{
@@ -72,18 +115,35 @@ export default Messages;
 //         gap: 1.5,
 //       }}
 //     >
-//       <Message />
-//       <Message />
-//       <Message />
-//       <Message />
-//       <Message />
-//       <Message />
-//       <Message />
-//       <Message />
-//       <Message />
-//       <Message />
-//       <Message />
+//       {!loading &&
+//         messages.length > 0 &&
+//         messages.map((message) => (
+//           <Box key={message._id} ref={lastMessageRef}>
+//             <Message message={message} />
+//           </Box>
+//         ))}
 
+//       {isTyping && (
+//         <Typography variant="body2" sx={{ color: "text.secondary", fontStyle: "italic", ml: 1 }}>
+//           Typing...
+//         </Typography>
+//       )}
+
+//       {loading && [...Array(3)].map((_, idx) => <MessageSkeleton key={idx} />)}
+
+//       {!loading && messages.length === 0 && (
+//         <Box
+//           sx={{
+//             display: "flex",
+//             justifyContent: "center",
+//             alignItems: "center",
+//             height: "100%",
+//             color: "text.secondary",
+//           }}
+//         >
+//           Send messages to start a conversation
+//         </Box>
+//       )}
 //     </Box>
 //   );
 // };

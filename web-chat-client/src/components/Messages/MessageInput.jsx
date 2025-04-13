@@ -1,4 +1,10 @@
-import { Box, IconButton, InputBase, Paper } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  IconButton,
+  InputBase,
+  Paper,
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useState } from "react";
 import useSendMessage from "../../hooks/useSendMessage";
@@ -39,7 +45,11 @@ const MessageInput = () => {
           onChange={(e) => setMessage(e.target.value)}
         />
         <IconButton type="submit" sx={{ color: "white.main" }}>
-          <SendIcon />
+          {loading ? (
+            <CircularProgress sx={{ color: "white.main" }} size={20} />
+          ) : (
+            <SendIcon />
+          )}
         </IconButton>
       </Paper>
     </Box>
@@ -48,12 +58,57 @@ const MessageInput = () => {
 
 export default MessageInput;
 
-// import { Box, IconButton, InputBase, Paper } from "@mui/material";
+// ============================  typing ========================
+
+// import { useContext, useEffect, useState } from "react";
+// import { useSelector } from "react-redux";
+// import { Box, CircularProgress, IconButton, InputBase, Paper } from "@mui/material";
 // import SendIcon from "@mui/icons-material/Send";
+// import useSendMessage from "../../hooks/useSendMessage";
+// import { useSocketContext } from "../../context/SocketContext";
+// import { AuthContext } from "../../context/AuthContext";
 
 // const MessageInput = () => {
+//   const [message, setMessage] = useState("");
+//   const { loading, sendMessage } = useSendMessage();
+//   const { socket } = useSocketContext();
+//   const selectedConversation = useSelector(state => state.conversation.selectedConversation);
+//   const { authUser: currentUser } = useContext(AuthContext);
+
+//   useEffect(() => {
+//     if (!socket) return;
+
+//     const timeout = setTimeout(() => {
+//       if (message) {
+//         socket.emit("typing", {
+//           senderId: currentUser._id,
+//           receiverId: selectedConversation._id,
+//         });
+//       } else {
+//         socket.emit("stopTyping", {
+//           senderId: currentUser._id,
+//           receiverId: selectedConversation._id,
+//         });
+//       }
+//     }, 300); // delay to prevent spamming
+
+//     return () => clearTimeout(timeout);
+//   }, [message, socket, currentUser._id, selectedConversation._id]);
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     if (!message) return;
+//     await sendMessage(message);
+//     setMessage("");
+
+//     socket.emit("stopTyping", {
+//       senderId: currentUser._id,
+//       receiverId: selectedConversation._id,
+//     });
+//   };
+
 //   return (
-//     <Box component="form" sx={{ px: 2, my: 2 }}>
+//     <Box onSubmit={handleSubmit} component="form" sx={{ px: 2, my: 2 }}>
 //       <Paper
 //         component="div"
 //         sx={{
@@ -73,9 +128,15 @@ export default MessageInput;
 //             color: "white.main",
 //           }}
 //           inputProps={{ "aria-label": "send message" }}
+//           value={message}
+//           onChange={(e) => setMessage(e.target.value)}
 //         />
 //         <IconButton type="submit" sx={{ color: "white.main" }}>
-//           <SendIcon />
+//           {loading ? (
+//             <CircularProgress sx={{ color: "white.main" }} size={20} />
+//           ) : (
+//             <SendIcon />
+//           )}
 //         </IconButton>
 //       </Paper>
 //     </Box>
