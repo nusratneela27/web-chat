@@ -3,7 +3,6 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 const connectDB = require("./config/database");
-
 const authRoutes = require("./routes/authRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -16,7 +15,8 @@ require("dotenv").config();
 
 // Middleware
 app.use(cors({
-    origin: 'http://localhost:5173',
+    // origin: 'http://localhost:5173',
+    origin: process.env.CLIENT_URL,
     credentials: true
   }));
 // app.use(cors());
@@ -32,6 +32,10 @@ async function initializeServer() {
     app.use("/messages", messageRoutes)
     app.use("/users", userRoutes)
 
+    server.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+    });
+
     // app.get("/", (req, res) => {
     //     res.send("Server is running");
     // });
@@ -39,10 +43,7 @@ async function initializeServer() {
     // app.listen(port, () => {
     //     console.log(`Server is running on port ${port}`);
     // });
-
-    server.listen(port, () => {
-        console.log(`Server is running on port ${port}`);
-    });
+    
 }
 
 initializeServer()

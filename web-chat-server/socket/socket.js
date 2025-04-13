@@ -4,12 +4,15 @@ const express = require("express");
 
 const app = express();
 
+require("dotenv").config();
+
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        // origin: "http://localhost:5173",
+        origin: process.env.CLIENT_URL,
         methods: ["GET", "POST"],
-        credentials: true,
+        // credentials: true,
     },
 });
 
@@ -27,6 +30,8 @@ io.on("connection", (socket) => {
     // io.emit() is used to send events to all the connected clients
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
+
+    // socket.on() is used to listen to the events. can be used both on client and server side
     socket.on("disconnect", () => {
         // console.log("A user disconnected", socket.id);
         delete userSocketMap[userId];
