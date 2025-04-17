@@ -59,11 +59,20 @@ const Conversation = ({ conversation, lastIdx }) => {
               : "text.primary",
         }}
       >
-        {/* Avatar with online indicator */}
+        {/* Avatar with online indicator and badge*/}
         <Box sx={{ position: "relative" }}>
-          <Badge
+          {/* <Badge
             color="error"
             badgeContent={unreadCount > 0 ? unreadCount : null}
+            overlap="circular"
+          > */}
+          <Badge
+            color="error"
+            badgeContent={
+              selectedConversation?._id !== conversation._id && unreadCount > 0
+                ? unreadCount
+                : null
+            }
             overlap="circular"
           >
             <Avatar

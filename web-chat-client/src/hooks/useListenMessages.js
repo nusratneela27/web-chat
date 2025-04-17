@@ -7,12 +7,21 @@ const useListenMessages = () => {
   const { socket } = useSocketContext();
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.conversation.messages);
+  const selectedConversation = useSelector((state) => state.conversation.selectedConversation);
 
   useEffect(() => {
     if (!socket) return;
 
     socket.on("newMessage", (newMessage) => {
       dispatch(setMessages([...messages, newMessage]));
+
+      // 🔥 If this message is from the currently selected chat, mark it as read
+      if (selectedConversation && newMessage.senderId === selectedConversation._id) {
+        socket.emit("markAllAsRead", {
+          senderId: newMessage.senderId,
+          receiverId: newMessage.receiverId,
+        });
+      }
     });
 
     socket.on("messageStatusUpdate", ({ messageId, status }) => {
@@ -32,14 +41,15 @@ const useListenMessages = () => {
     });
 
     return () => {
-      socket?.off("newMessage");
-      socket?.off("messageStatusUpdate");
-      socket?.off("messagesMarkedAsRead");
+      socket.off("newMessage");
+      socket.off("messageStatusUpdate");
+      socket.off("messagesMarkedAsRead");
     };
-  }, [socket, messages]);
+  }, [socket, messages, selectedConversation]);
 };
 
 export default useListenMessages;
+
 
 // =========== without indicator ====================
 // import { useEffect } from "react";
