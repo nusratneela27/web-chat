@@ -32,9 +32,9 @@ const useListenMessages = () => {
     });
 
     return () => {
-      socket.off("newMessage");
-      socket.off("messageStatusUpdate");
-      socket.off("messagesMarkedAsRead");
+      socket?.off("newMessage");
+      socket?.off("messageStatusUpdate");
+      socket?.off("messagesMarkedAsRead");
     };
   }, [socket, messages]);
 };
@@ -55,7 +55,6 @@ export default useListenMessages;
 
 //     useEffect(() => {
 //         socket.on("newMessage", (newMessage) => {
-           
 //             dispatch(setMessages([...messages, newMessage]));
 //         });
 
