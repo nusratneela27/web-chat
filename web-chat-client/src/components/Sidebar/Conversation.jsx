@@ -14,7 +14,7 @@ const Conversation = ({ conversation, lastIdx }) => {
   const { socket, onlineUsers } = useSocketContext();
 
   // badge counter
-  const messages = useSelector((state) => state.conversation.messages);
+  const messages = useSelector((state) => state.conversation.messages) || [];
   const unreadCount = messages?.filter(
     (msg) =>
       msg.senderId === conversation._id &&

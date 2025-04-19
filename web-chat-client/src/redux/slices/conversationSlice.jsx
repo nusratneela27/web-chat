@@ -24,10 +24,13 @@ const conversationSlice = createSlice({
         messageToUpdate.status = status;
       }
     },
+    addMessage: (state, action) => {
+      state.messages.push(action.payload);
+    },
   },
 });
 
-export const { setSelectedConversation, setMessages, updateMessageStatus } =
+export const { setSelectedConversation, setMessages, updateMessageStatus, addMessage } =
   conversationSlice.actions;
 
 export default conversationSlice.reducer;

@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import MessageContainer from "../../components/Messages/MessageContainer";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import MessageListener from "../../components/Messages/MessageListener";
 
 const Home = () => {
   return (
@@ -28,6 +29,7 @@ const Home = () => {
         <Sidebar />
         <MessageContainer />
       </Box>
+      <MessageListener/>
     </Box>
   );
 };
