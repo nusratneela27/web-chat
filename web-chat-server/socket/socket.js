@@ -18,6 +18,7 @@ const userSocketMap = {}; // {userId: socketId}
 const getReceiverSocketId = (receiverId) => userSocketMap[receiverId];
 
 io.on("connection", (socket) => {
+  // console.log("A user is connect" , socket.id)
   const userId = socket.handshake.query.userId;
   if (userId && userId !== "undefined") {
     userSocketMap[userId] = socket.id;
@@ -25,6 +26,7 @@ io.on("connection", (socket) => {
   }
 
   socket.on("disconnect", () => {
+    // console.log("A user is disconnect" , socket.id)
     delete userSocketMap[userId];
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
   });
@@ -70,13 +72,24 @@ io.on("connection", (socket) => {
     }
   });
 
-  // socket.on("typing", ({ senderId, receiverId }) => {
-  //   io.to(receiverId).emit("typing", { senderId, receiverId });
-  // });
-  
-  // socket.on("stopTyping", ({ senderId, receiverId }) => {
-  //   io.to(receiverId).emit("stopTyping", { senderId, receiverId });
-  // });
+  // ==== todo typing ===
+  socket.on('joinConversation', (conversationId) => {
+    socket.join(conversationId);
+  });
+
+  socket.on('leaveConversation', (conversationId) => {
+    socket.leave(conversationId);
+  });
+
+  socket.on('typing', ({ conversationId, isTyping }) => {
+    const userId = socket.handshake.query.userId;
+    
+    // Broadcast to all in conversation except sender
+    socket.to(conversationId).emit('typing', {
+      userId,
+      isTyping
+    });
+  });
   
 });
 
