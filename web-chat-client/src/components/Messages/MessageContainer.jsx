@@ -80,18 +80,18 @@ const NoChatSelected = () => {
         <img src={logo} alt="logo" />
         <Typography
           variant="h6"
+          fontWeight="bold"
           sx={{
-            fontWeight: 600,
+            fontSize: {
+              xs: "15px",
+              sm: "20px",
+              md: "20px",
+            },
           }}
         >
           Welcome 👋 {authUser.fullName}
         </Typography>
-        <Typography
-          variant="body1"
-          sx={{
-            fontWeight: 500,
-          }}
-        >
+        <Typography variant="body1">
           Select a chat to start messaging
         </Typography>
       </Stack>

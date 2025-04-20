@@ -63,7 +63,19 @@ const SignUp = () => {
             borderRadius: { xs: "8px 8px 0 0", md: "8px 0 0 8px" },
           }}
         >
-          <Typography variant="h3" fontWeight="bold" gutterBottom textAlign="center">
+          <Typography
+            variant="h3"
+            fontWeight="bold"
+            gutterBottom
+            textAlign="center"
+            sx={{
+              fontSize: {
+                xs: "1.25rem",
+                sm: "1.5rem",
+                md: "2rem",
+              },
+            }}
+          >
             Create Account
           </Typography>
           <Typography variant="body1" textAlign="center" maxWidth="300px">
@@ -168,7 +180,7 @@ const SignUp = () => {
 
             {/* Login link */}
             <Typography sx={{ mt: 2 }}>
-              Already have an account?{" "}
+              Already have an account? <br />
               <NavLink
                 to="/login"
                 style={{
@@ -189,167 +201,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
-
-
-// import {
-//   Box,
-//   Button,
-//   TextField,
-//   Typography,
-//   FormControl,
-//   RadioGroup,
-//   FormControlLabel,
-//   Radio,
-//   CircularProgress,
-// } from "@mui/material";
-
-// import logo from "../../assets/logo.png";
-// import { Controller, useForm } from "react-hook-form";
-// import { NavLink, useNavigate } from "react-router";
-// import useSignup from "../../hooks/useSignup";
-
-// const SignUp = () => {
-//   const { register, handleSubmit, control } = useForm();
-
-//   const { signup, loading } = useSignup();
-
-//   const navigate = useNavigate();
-
-//   const onSubmit = async (data) => {
-//     const success = await signup(data);
-//     if (success) {
-//       navigate("/");
-//     }
-//   };
-
-//   return (
-//     <Box
-//       sx={{
-//         minHeight: "90vh",
-//         display: "flex",
-//         justifyContent: "center",
-//         alignItems: "center",
-//       }}
-//     >
-//       <Box
-//         sx={{
-//           width: "100%",
-//           maxWidth: "500px",
-//           textAlign: "center",
-//           backgroundColor: "rgba(160, 174, 155, 0.53)",
-//           p: 6,
-//           borderRadius: 2,
-//           boxShadow: 3,
-//         }}
-//       >
-//         <Box
-//           sx={{
-//             display: "flex",
-//             justifyContent: "center",
-//             alignItems: "center",
-//             mb: 5,
-//           }}
-//         >
-//           <NavLink to="/">
-//             <img src={logo} alt="logo" />
-//           </NavLink>
-//         </Box>
-
-//         {/* Form */}
-//         <Box
-//           onSubmit={handleSubmit(onSubmit)}
-//           component="form"
-//           noValidate
-//           autoComplete="off"
-//           sx={{
-//             display: "flex",
-//             flexDirection: "column",
-//             gap: 2,
-//           }}
-//         >
-//           <TextField
-//             label="Fullname"
-//             type="text"
-//             variant="outlined"
-//             fullWidth
-//             {...register("fullName", { required: true })}
-//           />
-//           <TextField
-//             label="Username"
-//             type="text"
-//             variant="outlined"
-//             fullWidth
-//             {...register("username", { required: true })}
-//           />
-//           <TextField
-//             label="Password"
-//             type="password"
-//             variant="outlined"
-//             fullWidth
-//             {...register("password", { required: true })}
-//           />
-
-//           <FormControl component="fieldset">
-//             <Controller
-//               name="gender"
-//               control={control}
-//               defaultValue="male"
-//               rules={{ required: true }}
-//               render={({ field }) => (
-//                 <RadioGroup row {...field}>
-//                   <FormControlLabel
-//                     value="male"
-//                     control={<Radio />}
-//                     label="Male"
-//                   />
-//                   <FormControlLabel
-//                     value="female"
-//                     control={<Radio />}
-//                     label="Female"
-//                   />
-//                 </RadioGroup>
-//               )}
-//             />
-//           </FormControl>
-
-//           <Button
-//             type="submit"
-//             variant="contained"
-//             color="primary"
-//             sx={{
-//               py: 1.5,
-//               textTransform: "none",
-//               fontWeight: "bold",
-//               boxShadow: "none",
-//             }}
-//           >
-//             {loading ? (
-//               <CircularProgress size={24} color="white.main" />
-//             ) : (
-//               "Sign up"
-//             )}
-//           </Button>
-//         </Box>
-
-//         {/* Create New acc */}
-//         <Typography sx={{ mt: 2 }}>
-//           Already have an account?
-//           <NavLink
-//             to="/login"
-//             style={{
-//               color: "#2a3d1b",
-//               textDecoration: "none",
-//               fontWeight: "bold",
-//               marginLeft: "5px",
-//             }}
-//           >
-//             Login
-//           </NavLink>
-//         </Typography>
-//       </Box>
-//     </Box>
-//   );
-// };
-
-// export default SignUp;
