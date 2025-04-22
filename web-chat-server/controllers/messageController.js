@@ -1,9 +1,9 @@
-const Conversation = require("../models/conversationModel");
-const Message = require("../models/messageModel");
-const User = require("../models/userModel");
-const { getReceiverSocketId, io } = require("../socket/socket");
-const createHttpError = require('http-errors');
-const path = require('path');
+import Conversation from "../models/conversationModel.js";
+import Message from "../models/messageModel.js";
+import User from "../models/userModel.js";
+import { getReceiverSocketId, io } from "../socket/socket.js";
+import createHttpError from 'http-errors';
+import path from 'path';
 
 const sendMessage = async (req, res, next) => {
     try {
@@ -83,7 +83,94 @@ const getMessages = async (req, res, next) => {
     }
 };
 
-module.exports = { sendMessage, getMessages };
+export { sendMessage, getMessages };
+
+// const Conversation = require("../models/conversationModel");
+// const Message = require("../models/messageModel");
+// const User = require("../models/userModel");
+// const { getReceiverSocketId, io } = require("../socket/socket");
+// const createHttpError = require('http-errors');
+// const path = require('path');
+
+// const sendMessage = async (req, res, next) => {
+//     try {
+//         const { message: textMessage } = req.body;
+//         const { id: receiverId } = req.params;
+//         const senderId = req.user._id;
+//         const senderUsername = req.user.username;
+
+//         // Validate input
+//         if (!textMessage && !req.file) {
+//             throw createHttpError(400, 'Message or image is required');
+//         }
+
+//         // Find or create conversation
+//         let conversation = await Conversation.findOne({
+//             participants: { $all: [senderId, receiverId] },
+//         });
+
+//         if (!conversation) {
+//             conversation = await Conversation.create({
+//                 participants: [senderId, receiverId],
+//             });
+//         }
+
+//         // Create new message
+//         const newMessage = new Message({
+//             senderId,
+//             senderUsername,
+//             receiverId,
+//             status: "sent",
+//         });
+
+//         // Handle image or text message
+//         if (req.file) {
+//             newMessage.image = `/images/${req.file.filename}`;
+//             newMessage.isImage = true;
+//             if (textMessage) {
+//                 newMessage.message = textMessage; // Optional caption
+//             }
+//         } else {
+//             newMessage.message = textMessage;
+//             newMessage.isImage = false;
+//         }
+
+//         // Save message and update conversation
+//         conversation.messages.push(newMessage._id);
+//         await Promise.all([conversation.save(), newMessage.save()]);
+
+//         // Socket.io notification
+//         const receiverSocketId = getReceiverSocketId(receiverId);
+//         if (receiverSocketId) {
+//             newMessage.status = "delivered";
+//             await newMessage.save();
+//             io.to(receiverSocketId).emit("newMessage", newMessage.toObject());
+//         }
+
+//         res.status(201).json(newMessage);
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
+// const getMessages = async (req, res, next) => {
+//     try {
+//         const { id: userToChatId } = req.params;
+//         const senderId = req.user._id;
+
+//         const conversation = await Conversation.findOne({
+//             participants: { $all: [senderId, userToChatId] },
+//         }).populate('messages');
+
+//         if (!conversation) return res.status(200).json([]);
+
+//         res.status(200).json(conversation.messages);
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
+// module.exports = { sendMessage, getMessages };
 
 // =================== senderUsername for toast ================
 // const Conversation = require("../models/conversationModel");

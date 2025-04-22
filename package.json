@@ -1,0 +1,21 @@
+{
+  "name": "web-chat",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+   "build": "npm install --prefix web-chat-server && npm install --prefix web-chat-client && npm run build --prefix web-chat-client",
+    "start": "npm run start --prefix web-chat-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nusratneela27/web-chat.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nusratneela27/web-chat/issues"
+  },
+  "homepage": "https://github.com/nusratneela27/web-chat#readme",
+  "description": ""
+}

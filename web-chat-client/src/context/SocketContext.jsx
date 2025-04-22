@@ -4,6 +4,9 @@ import { io } from "socket.io-client";
 
 const SocketContext = createContext();
 
+const BASE_URL =
+  import.meta.env.MODE === "development" ? "http://localhost:5000" : "/";
+
 export const useSocketContext = () => {
   return useContext(SocketContext);
 };
@@ -15,7 +18,7 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser) {
-      const socket = io(`${import.meta.env.VITE_API_URL}`, {
+      const socket = io(BASE_URL, {
         query: {
           userId: authUser._id,
         },
